@@ -17,8 +17,8 @@ pipeline {
     stage('SonarQube Scan') {
       when {
         anyOf {
-          branch 'Dev'         // Auto runs on dev
-          triggeredBy 'UserIdCause'  // Only runs on main if manually triggered
+          branch 'Dev'
+          triggeredBy 'UserIdCause'
         }
       }
       steps {
@@ -52,11 +52,19 @@ pipeline {
   }
 
   post {
-    failure {
-      echo "Quality Gate failed on ${env.BRANCH_NAME} — PR merge to main is blocked."
-    }
     success {
-      echo "Quality Gate passed on ${env.BRANCH_NAME}."
+      githubNotify status: 'SUCCESS',
+                   description: 'Quality Gate passed',
+                   context: 'jenkins/quality-gate',
+                   credentialsId: 'github-dvwa'
+      echo "✅ Quality Gate passed on ${env.BRANCH_NAME}."
+    }
+    failure {
+      githubNotify status: 'FAILURE',
+                   description: 'Quality Gate failed — fix issues before merging',
+                   context: 'jenkins/quality-gate',
+                   credentialsId: 'github-dvwa'
+      echo "❌ Quality Gate failed on ${env.BRANCH_NAME} — PR merge to main is blocked."
     }
   }
 }
