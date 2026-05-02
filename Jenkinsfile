@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     REPO_URL = 'https://github.com/ramizaly/DVWA.git'
-    ABORT_ON_QUALITY_GATE_FAILURE = 'false'  // Set to 'true' to block deployment on failure
+    ABORT_ON_QUALITY_GATE_FAILURE = 'true'  // Set to 'true' to block deployment on failure
   }
 
   stages {
@@ -63,7 +63,7 @@ pipeline {
               error "Pipeline aborted — Quality Gate failed."
             } else {
               echo "⚠️ Proceeding despite Quality Gate failure (ABORT_ON_QUALITY_GATE_FAILURE=false)"
-              //unstable "Quality Gate failed but continuing pipeline."
+              unstable "Quality Gate failed but continuing pipeline."
             }
 
           } else {
