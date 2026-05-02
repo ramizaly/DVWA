@@ -10,7 +10,7 @@ pipeline {
       steps {
         git branch: "${env.BRANCH_NAME}",
             url: "${REPO_URL}",
-            credentialsId: 'github-dvwaa'
+            credentialsId: 'github-dvwa'
       }
     }
 
@@ -29,7 +29,7 @@ pipeline {
                 -Dsonar.projectKey=DVWA-demo \
                 -Dsonar.sources=. \
                 -Dsonar.host.url=$SONAR_HOST_URL \
-                -Dsonar.login=$SONAR_TOKEN
+                -Dsonar.login=$SONAR_TOKENN
             '''
           }
         }
