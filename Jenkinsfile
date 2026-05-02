@@ -10,7 +10,7 @@ pipeline {
       steps {
         git branch: "${env.BRANCH_NAME}",
             url: "${REPO_URL}",
-            credentialsId: 'github-dvwa'
+            credentialsId: 'github-dvwaa'
       }
     }
 
@@ -51,20 +51,4 @@ pipeline {
     }
   }
 
- post {
-    success {
-      githubNotify status: 'SUCCESS',
-                   description: 'Quality Gate passed',
-                   context: 'jenkins/quality-gate',
-                   credentialsId: 'github-dvwa'
-      echo "✅ Quality Gate passed on ${env.BRANCH_NAME}."
-    }
-    failure {
-      githubNotify status: 'FAILURE',
-                   description: 'Quality Gate failed — fix issues before merging',
-                   context: 'jenkins/quality-gate',
-                   credentialsId: 'github-dvwa'
-      echo "❌ Quality Gate failed on ${env.BRANCH_NAME} — PR merge to main is blocked."
-    }
-  }
 }
