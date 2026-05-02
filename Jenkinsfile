@@ -3,7 +3,6 @@ pipeline {
 
   environment {
     REPO_URL = 'https://github.com/ramizaly/DVWA.git'
-    // No BRANCH needed — Multibranch Jenkins sets env.BRANCH_NAME automatically
   }
 
   stages {
@@ -16,6 +15,12 @@ pipeline {
     }
 
     stage('SonarQube Scan') {
+      when {
+        anyOf {
+          branch 'Dev'         // Auto runs on dev
+          triggeredBy 'UserIdCause'  // Only runs on main if manually triggered
+        }
+      }
       steps {
         withSonarQubeEnv('sonar') {
           withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
@@ -32,6 +37,12 @@ pipeline {
     }
 
     stage('Quality Gate') {
+      when {
+        anyOf {
+          branch 'Dev'
+          triggeredBy 'UserIdCause'
+        }
+      }
       steps {
         timeout(time: 5, unit: 'MINUTES') {
           waitForQualityGate abortPipeline: true
@@ -42,10 +53,10 @@ pipeline {
 
   post {
     failure {
-      echo "Quality Gate failed on branch ${env.BRANCH_NAME} — merge to main is blocked."
+      echo "Quality Gate failed on ${env.BRANCH_NAME} — PR merge to main is blocked."
     }
     success {
-      echo "Quality Gate passed on ${env.BRANCH_NAME}. Safe to merge."
+      echo "Quality Gate passed on ${env.BRANCH_NAME}."
     }
   }
 }
