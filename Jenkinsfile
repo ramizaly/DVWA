@@ -51,20 +51,22 @@ pipeline {
     }
   }
 
-  post {
+ post {
     success {
-      githubNotify status: 'SUCCESS',
-                   description: 'Quality Gate passed',
-                   context: 'jenkins/quality-gate',
-                   credentialsId: 'github-dvwa'
+      publishChecks name: 'jenkins/quality-gate',
+                   status: 'COMPLETED',
+                   conclusion: 'SUCCESS',
+                   title: 'Quality Gate',
+                   summary: 'Quality Gate passed — safe to merge'
       echo "✅ Quality Gate passed on ${env.BRANCH_NAME}."
     }
     failure {
-      githubNotify status: 'FAILURE',
-                   description: 'Quality Gate failed — fix issues before merging',
-                   context: 'jenkins/quality-gate',
-                   credentialsId: 'github-dvwa'
-      echo "❌ Qualityy Gate failed on ${env.BRANCH_NAME} — PR merge to main is blocked."
+      publishChecks name: 'jenkins/quality-gate',
+                   status: 'COMPLETED',
+                   conclusion: 'FAILURE',
+                   title: 'Quality Gate',
+                   summary: 'Quality Gate failed — fix issues before merging'
+      echo "❌ Quality Gate failed on ${env.BRANCH_NAME} — PR blocked."
     }
   }
 }
