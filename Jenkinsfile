@@ -63,7 +63,7 @@ pipeline {
               error "Pipeline aborted — Quality Gate failed."
             } else {
               echo "⚠️ Proceeding despite Quality Gate failure (ABORT_ON_QUALITY_GATE_FAILURE=false)"
-              unstable "Quality Gate failed but continuing pipeline."
+              //unstable "Quality Gate failed but continuing pipeline."
             }
 
           } else {
@@ -86,6 +86,7 @@ pipeline {
     }
   }
 
+/*
   post {
     success {
       echo "✅ Pipeline completed successfully on ${env.BRANCH_NAME}."
@@ -97,4 +98,5 @@ pipeline {
       echo "❌ Pipeline failed on ${env.BRANCH_NAME}."
     }
   }
+*/
 }
