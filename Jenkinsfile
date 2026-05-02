@@ -64,7 +64,7 @@ pipeline {
                    description: 'Quality Gate failed — fix issues before merging',
                    context: 'jenkins/quality-gate',
                    credentialsId: 'github-dvwa'
-      echo "❌ Quality Gate failed on ${env.BRANCH_NAME} — PR merge to main is blocked."
+      echo "❌ Qualityy Gate failed on ${env.BRANCH_NAME} — PR merge to main is blocked."
     }
   }
 }
