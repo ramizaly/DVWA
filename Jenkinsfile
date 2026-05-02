@@ -66,7 +66,7 @@ pipeline {
                    conclusion: 'FAILURE',
                    title: 'Quality Gate',
                    summary: 'Quality Gate failed — fix issues before merging'
-      echo "❌ Quality Gate failed on ${env.BRANCH_NAME} — PR blocked."
+      echo "❌ Qualityy Gate failed on ${env.BRANCH_NAME} — PR blocked."
     }
   }
 }
